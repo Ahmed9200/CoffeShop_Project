@@ -74,6 +74,7 @@ public class Data {
             return null;
         }
     }
+
     /*
      method to get any coulmn in any table in database
      @param String tableName
@@ -151,6 +152,7 @@ public class Data {
                 item.setPbd(rs.getDouble("PriceBeforeDiscount"));
                 item.setDiscount(rs.getDouble("Discount"));
                 item.setPad(rs.getDouble("PriceAfterDiscount"));
+                item.setDate(rs.getString("date"));
 
                 data.add(item);
             }

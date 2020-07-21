@@ -21,6 +21,15 @@ public class Invoice {
     private double pbd;
     private double discount;
     private double pad;
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public int getId() {
         return id;
@@ -56,12 +65,13 @@ public class Invoice {
 
     public void add(Connection con) {
         try {
-            String q = "Insert invoice values (?,?,?,?)";
+            String q = "Insert invoice values (?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(q);
             stmt.setInt(1, id);
             stmt.setDouble(2, pbd);
             stmt.setDouble(3, discount);
             stmt.setDouble(4, pad);
+            stmt.setString(5, date);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Sold_items.class.getName()).log(Level.SEVERE, null, ex);

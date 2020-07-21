@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JButton;
@@ -28,7 +29,6 @@ public class Project extends javax.swing.JFrame {
      */
     public static int item_id;
     public static int size_id;
-    public static int startingId;
     public static double totalWholeProject;
     static DefaultTableModel tableModel = new DefaultTableModel();
     ArrayList<BillData> soldItems = new ArrayList<>();
@@ -2892,6 +2892,7 @@ public class Project extends javax.swing.JFrame {
             in.setDiscount(Double.parseDouble(disc_txt.getText()));
             in.setPad(Double.parseDouble(taf_txt.getText()));
             in.setPbd(Double.parseDouble(price_txt.getText()));
+            in.setDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             in.add(Data.con);
 
             for (int i = 0; i < soldItems.size(); i++) {
@@ -2904,16 +2905,6 @@ public class Project extends javax.swing.JFrame {
                 s.add(Data.con);
             }
             totalWholeProject += Double.parseDouble(taf_txt.getText());
-
-            if (startingId > in.getId()) {
-                startingId = in.getId();
-
-            }
-
-            if (startingId == 0) {
-                startingId = Integer.parseInt(Data.AutoIncrementCoulmn(Data.con, "invoice", "id"));
-
-            }
 
             Helper.print(soldItems, in.getId() + "", price_txt.getText(), disc_txt.getText(), taf_txt.getText());
             Thread.sleep(7000);
@@ -4491,18 +4482,22 @@ public class Project extends javax.swing.JFrame {
             repo.setDate(new Date() + "");
             repo.setTotal(totalWholeProject);
             repo.add(Data.con);
+
+            Data.excuteQuery(Data.con, "truncate table invoice");
+
         } catch (Exception e) {
         }
 
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton140ActionPerformed
 
-    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {
+        //GEN-FIRST:event_jTabbedPane1MouseClicked
         // TODO add your handling code here:
 
         try {
 
-            totalWholeProject = Double.parseDouble(Data.getCoulmnData(Data.con, "invoice", "sum(pad)", " where id >=" + (startingId - 1))[0]);
+            totalWholeProject = Double.parseDouble(Data.getCoulmnData(Data.con, "invoice", "sum(pad)", " where date = '" + new SimpleDateFormat("yyyy-MM-dd").format(new Date())+"';")[0]);
             double trakom = Double.parseDouble(Data.getCoulmnData(Data.con, "reviewRepo", "sum(total)", " ")[0]);
             trakomy.setText(trakom + "");
             dayash.setText(totalWholeProject + "");
